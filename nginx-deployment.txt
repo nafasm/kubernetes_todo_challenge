@@ -1,3 +1,4 @@
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-hello-world
@@ -15,7 +16,7 @@ spec:
       - name: nginx
         image: nginxdemos/hello
         ports:
-        - containerPort: 10000
+        - containerPort: 80
       tolerations:
         - key: "node-role.kubernetes.io/master"
           effect: "NoSchedule"
