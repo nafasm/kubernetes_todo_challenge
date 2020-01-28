@@ -9,6 +9,5 @@ spec:
   - name: http
     port: 80
     protocol: TCP
-    targetPort: 32042
   sessionAffinity: None
   type: NodePort
