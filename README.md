@@ -21,3 +21,11 @@ sub-directory of the sub-directory, ad infinitum).
   
   #####################
        
+Kubernetes cluster has been created using GCE, and following files have been uploaded in this repo. We have one master server and nginx deployment has been created on the master node after updating tolerations for the pod which matches with Master nodes' taint. 
+
+
+       1 kubectl get all.txt
+       2 kubernetes installation_steps.txt
+       3 nginx-deployment.txt
+       4 nginx-service.txt
+       5 nginx-webpage screenshot.PNG
