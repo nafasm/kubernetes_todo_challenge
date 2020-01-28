@@ -1,0 +1,59 @@
+apt-get update && apt-get upgrade -y 
+echo "docker installation" 
+apt-get install -y docker.io
+if [ $? != 0 ]; then echo "Docker installation successful" ; fi
+cat  << EOF >> /etc/apt/sources.list.d/kubernetes.list
+deb http://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+
+
+
+
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+apt-get update
+apt-get install -y apt-transport-https
+apt-get update
+apt-get install -y kubeadm=1.15.1-00 kubelet=1.15.1-00 kubectl=1.15.1-00 vim iputils-ping
+
+#calico
+wget https://tinyurl.com/yb4xturm -O rbac-kdd.yaml
+wget https://tinyurl.com/y8lvqc9g -O calico.yaml
+
+
+IP=$(ip  route get 1.2.3.4 | awk '{print $7}' | sed  '/^$/d')
+cp /etc/hosts /etc/hosts.bk
+echo "$IP k8smaster" >> /etc/hosts
+
+
+cat <<EOF>> kubeadm-config.yaml
+apiVersion: kubeadm.k8s.io/v1beta2
+kind: ClusterConfiguration
+kubernetesVersion: 1.15.1 #<-- Use the word stable for newest version
+controlPlaneEndpoint: "k8smaster:6443" #<-- Use the node alias not the IP
+networking:
+  podSubnet: 192.168.0.0/16 #<-- Match the IP range from the Calico config file
+EOF
+
+
+
+
+kubeadm init --config=kubeadm-config.yaml --upload-certs
+
+
+
+
+#####################################Run as normal user ###########
+
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+#cat  .kube/config
+
+
+#15 Apply the network plugin configuration to your cluster. Remember to copy the file to the current, non-root user directory
+sudo cp /root/rbac-kdd.yaml .
+kubectl apply -f rbac-kdd.yaml
+
+sudo cp /root/calico.yaml .
+kubectl apply -f calico.yaml
+
