@@ -1,0 +1,76 @@
+1 TODO CODE 
+
+for file_name in $(find $PWD  -type f -exec ls {} \;); do
+  if grep -q "TODO" $file_name  ; then echo $$file_name ; fi; done
+
+
+2  creating files and updating files with the string TODO, to test the above code 
+
+root@ip-172-17-17-222:/mnt# cp -r /usr/share/tomcat/ /mnt/todo_folder/
+root@ip-172-17-17-222:/mnt#
+root@ip-172-17-17-222:/mnt#
+root@ip-172-17-17-222:/mnt# cd /mnt/todo_folder/
+root@ip-172-17-17-222:/mnt/todo_folder# ls
+tomcat
+root@ip-172-17-17-222:/mnt/todo_folder# cd tomcat/
+root@ip-172-17-17-222:/mnt/todo_folder/tomcat# ls
+bin  conf  lib  LICENSE  logs  NOTICE  RELEASE-NOTES  RUNNING.txt  temp  webapps  work
+root@ip-172-17-17-222:/mnt/todo_folder/tomcat# touch 1.xml
+root@ip-172-17-17-222:/mnt/todo_folder/tomcat# vi 1.xml
+root@ip-172-17-17-222:/mnt/todo_folder/tomcat# cd logs
+root@ip-172-17-17-222:/mnt/todo_folder/tomcat/logs# ls
+catalina.2020-01-28.log  catalina.out  host-manager.2020-01-28.log  localhost.2020-01-28.log  localhost_access_log.2020-01-28.txt  manager.2020-01-28.log
+root@ip-172-17-17-222:/mnt/todo_folder/tomcat/logs# vi 2.log
+root@ip-172-17-17-222:/mnt/todo_folder/tomcat/logs# for i in {11..20}; do echo "TODO" >> ${i}.log ; done
+root@ip-172-17-17-222:/mnt/todo_folder/tomcat/temp# for i in {11..20}; do echo "TODO" >> ${i}.log ; done
+root@ip-172-17-17-222:/mnt/todo_folder/tomcat/temp#
+
+3 Verifying whether files are working as expected 
+root@ip-172-17-17-222:/mnt# for i in $(find $PWD  -type f -exec ls {} \;); do
+>   if grep -q "TODO" $i  ; then echo $i ; fi; done
+/mnt/todo_folder/tomcat/webapps/manager/WEB-INF/jsp/sessionDetail.jsp
+/mnt/todo_folder/tomcat/webapps/docs/funcspecs/index.html
+/mnt/todo_folder/tomcat/webapps/docs/changelog.html
+/mnt/todo_folder/tomcat/webapps/docs/tribes/interceptors.html
+/mnt/todo_folder/tomcat/webapps/docs/tribes/membership.html
+/mnt/todo_folder/tomcat/webapps/docs/tribes/transport.html
+/mnt/todo_folder/tomcat/webapps/docs/tribes/developers.html
+/mnt/todo_folder/tomcat/webapps/docs/tribes/status.html
+/mnt/todo_folder/tomcat/webapps/docs/tribes/setup.html
+/mnt/todo_folder/tomcat/webapps/docs/tribes/faq.html
+/mnt/todo_folder/tomcat/webapps/docs/architecture/requestProcess.html
+/mnt/todo_folder/tomcat/webapps/examples/WEB-INF/classes/websocket/drawboard/DrawboardEndpoint.java
+/mnt/todo_folder/tomcat/webapps/examples/WEB-INF/classes/websocket/drawboard/Client.java
+/mnt/todo_folder/tomcat/webapps/examples/WEB-INF/classes/websocket/drawboard/DrawMessage.java
+/mnt/todo_folder/tomcat/webapps/examples/WEB-INF/classes/websocket/echo/EchoEndpoint.java
+/mnt/todo_folder/tomcat/webapps/examples/jsp/async/index.jsp.html
+/mnt/todo_folder/tomcat/webapps/examples/jsp/async/index.jsp
+/mnt/todo_folder/tomcat/logs/4.log
+/mnt/todo_folder/tomcat/logs/2.log
+/mnt/todo_folder/tomcat/logs/5.log
+/mnt/todo_folder/tomcat/logs/8.log
+/mnt/todo_folder/tomcat/logs/9.log
+/mnt/todo_folder/tomcat/logs/6.log
+/mnt/todo_folder/tomcat/logs/10.log
+/mnt/todo_folder/tomcat/logs/3.log
+/mnt/todo_folder/tomcat/logs/7.log
+/mnt/todo_folder/tomcat/temp/20.log
+/mnt/todo_folder/tomcat/temp/12.log
+/mnt/todo_folder/tomcat/temp/11.log
+/mnt/todo_folder/tomcat/temp/14.log
+/mnt/todo_folder/tomcat/temp/16.log
+/mnt/todo_folder/tomcat/temp/18.log
+/mnt/todo_folder/tomcat/temp/15.log
+/mnt/todo_folder/tomcat/temp/17.log
+/mnt/todo_folder/tomcat/temp/13.log
+/mnt/todo_folder/tomcat/temp/19.log
+/mnt/todo_folder/tomcat/1.xml
+root@ip-172-17-17-222:/mnt#
+
+root@ip-172-17-17-222:/mnt# grep TODO /mnt/todo_folder/tomcat/webapps/examples/WEB-INF/classes/websocket/drawboard/DrawboardEndpoint.java
+     * TODO: Currently, Tomcat uses an Endpoint instance once - however
+                                // TODO: Find a better solution than this variable
+                            // Ignore, TODO: maybe close connection
+                            // Ignore, TODO: maybe close connection
+root@ip-172-17-17-222:/mnt#
+ 
